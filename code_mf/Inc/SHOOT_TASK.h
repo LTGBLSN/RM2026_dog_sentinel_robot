@@ -15,7 +15,7 @@
 #define SHOOT_2006_ID1_SPEED_PID_KI_MAX    5000.0f
 
 
-#define SHOOT_TURN_ON_SPEED  2000
+#define SHOOT_TURN_ON_SPEED  2500
 #define SHOOT_TURN_OFF_SPEED (-5000)
 
 #define SHOOT_SPEED_CHECK_TIME 100
@@ -30,7 +30,7 @@ void shoot_stop_check();
 void shoot_pid_control();
 
 void shoot_2006_id1_speed_pid_init(void);
-int16_t shoot_2006_id1_speed_pid_loop(float shoot_2006_ID1_speed_set_loop);
+int16_t shoot_2006_id6_speed_pid_loop(float shoot_2006_ID6_speed_set_loop);
 
 
 

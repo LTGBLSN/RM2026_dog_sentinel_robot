@@ -35,6 +35,7 @@
 #include "bsp_can.h"
 #include "dm_motor.h"
 #include "SHOOT_TASK.h"
+#include "NAV_TASK.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,8 +62,51 @@ float INS_angle[3] = {0.0f, 0.0f, 0.0f};
 float INS_degree[3] = {0.0f, 0.0f, 0.0f};
 
 //shoot
-float SHOOT_2006_ID1_GIVEN_SPEED ;
-int16_t SHOOT_2006_ID1_GIVEN_CURRENT ;
+float SHOOT_2006_ID6_GIVEN_SPEED ;
+int16_t SHOOT_2006_ID6_GIVEN_CURRENT ;
+
+float CHASSIS_3508_ID1_GIVEN_SPEED ;
+int16_t CHASSIS_3508_ID1_GIVEN_CURRENT ;
+
+float CHASSIS_3508_ID2_GIVEN_SPEED ;
+int16_t CHASSIS_3508_ID2_GIVEN_CURRENT ;
+
+float CHASSIS_3508_ID3_GIVEN_SPEED ;
+int16_t CHASSIS_3508_ID3_GIVEN_CURRENT ;
+
+float CHASSIS_3508_ID4_GIVEN_SPEED ;
+int16_t CHASSIS_3508_ID4_GIVEN_CURRENT ;
+
+float gimbal_vx ;
+float gimbal_vy ;
+
+float chassis_vx ;
+float chassis_vy ;
+float chassis_vround ;
+
+float yaw_angle_difference ;
+float yaw_radian_difference ;
+
+float FRICTION_WHEEL_3510_ID1_GIVEN_SPEED ;
+float FRICTION_WHEEL_3510_ID2_GIVEN_SPEED ;
+
+int16_t FRICTION_WHEEL_3510_ID1_GIVEN_CURRENT ;
+int16_t FRICTION_WHEEL_3510_ID2_GIVEN_CURRENT ;
+
+float YAW_6020_ID1_GIVEN_SPEED ;
+int16_t YAW_6020_ID1_GIVEN_CURRENT ;
+float YAW_6020_ID1_GIVEN_ANGLE ;
+
+float PITCH_6020_ID2_GIVEN_ANGLE ;
+float PITCH_6020_ID2_GIVEN_SPEED ;
+int16_t PITCH_6020_ID2_GIVEN_CURRENT ;
+
+float yaw_imu_preprocess ;//yaw轴imu预处理
+
+uint8_t uart7_receive_data ;//串口当前接收字节
+
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -133,6 +177,12 @@ int main(void)
 #if REMOTE_TYPE == DBUS
     HAL_UARTEx_ReceiveToIdle_DMA(&huart5, rx_dbus_buff, DBUS_BUFF_SIZE);
 #endif
+
+
+    HAL_UART_Receive_DMA(&huart7, &uart7_receive_data, 1);
+
+    HAL_UART_Receive_DMA(&huart10, &nav_uart_rx_data, 1);//继续进行中断接收
+
     dm_motor_init();
 
     BSP_FDCAN_Init();

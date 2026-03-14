@@ -55,6 +55,9 @@ osThreadId imu_dataHandle;
 osThreadId can_sentHandle;
 osThreadId shoot_taskHandle;
 osThreadId stop_checkHandle;
+osThreadId chassisHandle;
+osThreadId gimbalHandle;
+osThreadId auto_aimHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -69,6 +72,9 @@ void IMU_DATA_GET(void const * argument);
 void CAN_SENT_TASK(void const * argument);
 void SHOOT_TASK(void const * argument);
 void SHOOOT_STOP_CHECK(void const * argument);
+void CHASSIS_TASK(void const * argument);
+void GIMBAL_TASK(void const * argument);
+void AUTO_AIM_TASK(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -146,6 +152,18 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of stop_check */
   osThreadDef(stop_check, SHOOOT_STOP_CHECK, osPriorityIdle, 0, 128);
   stop_checkHandle = osThreadCreate(osThread(stop_check), NULL);
+
+  /* definition and creation of chassis */
+  osThreadDef(chassis, CHASSIS_TASK, osPriorityIdle, 0, 512);
+  chassisHandle = osThreadCreate(osThread(chassis), NULL);
+
+  /* definition and creation of gimbal */
+  osThreadDef(gimbal, GIMBAL_TASK, osPriorityIdle, 0, 512);
+  gimbalHandle = osThreadCreate(osThread(gimbal), NULL);
+
+  /* definition and creation of auto_aim */
+  osThreadDef(auto_aim, AUTO_AIM_TASK, osPriorityIdle, 0, 512);
+  auto_aimHandle = osThreadCreate(osThread(auto_aim), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -295,6 +313,60 @@ __weak void SHOOOT_STOP_CHECK(void const * argument)
     osDelay(1);
   }
   /* USER CODE END SHOOOT_STOP_CHECK */
+}
+
+/* USER CODE BEGIN Header_CHASSIS_TASK */
+/**
+* @brief Function implementing the chassis thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_CHASSIS_TASK */
+__weak void CHASSIS_TASK(void const * argument)
+{
+  /* USER CODE BEGIN CHASSIS_TASK */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END CHASSIS_TASK */
+}
+
+/* USER CODE BEGIN Header_GIMBAL_TASK */
+/**
+* @brief Function implementing the gimbal thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_GIMBAL_TASK */
+__weak void GIMBAL_TASK(void const * argument)
+{
+  /* USER CODE BEGIN GIMBAL_TASK */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END GIMBAL_TASK */
+}
+
+/* USER CODE BEGIN Header_AUTO_AIM_TASK */
+/**
+* @brief Function implementing the auto_aim thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_AUTO_AIM_TASK */
+__weak void AUTO_AIM_TASK(void const * argument)
+{
+  /* USER CODE BEGIN AUTO_AIM_TASK */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END AUTO_AIM_TASK */
 }
 
 /* Private application code --------------------------------------------------*/

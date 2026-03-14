@@ -15,7 +15,8 @@ void DEBUG_UART_TASK()
 {
     while (1)
     {
-        usart1_printf("%x \r\n", motor_can1_data[0].temperate);
+        usart1_printf("%f \r\n",
+                      imu_data_from_board_BMI088_mahony.pitch_degree_angle);
         osDelay(1);
     }
 }

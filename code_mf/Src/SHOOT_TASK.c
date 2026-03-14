@@ -20,9 +20,6 @@ void SHOOT_TASK()
     while (1)
     {
 
-
-
-
         shoot_pid_control();
 
         osDelay(1);
@@ -45,31 +42,38 @@ void SHOOOT_STOP_CHECK()
 
 void shoot_speed_compute()
 {
-    if(rcData.rc.s[1] == 2)
+    if(rcData.rc.ch[4] > 200)
     {
-        SHOOT_2006_ID1_GIVEN_SPEED = 2500 ;
-    } else if(rcData.rc.s[1] == 1)
+        if(FRICTION_WHEEL_3510_ID1_GIVEN_SPEED != 0.0f)
+        {
+            SHOOT_2006_ID6_GIVEN_SPEED = SHOOT_TURN_ON_SPEED ;
+        }
+        else
+        {
+            SHOOT_2006_ID6_GIVEN_SPEED = 0 ;
+        }
+
+
+    }
+    else
     {
-        SHOOT_2006_ID1_GIVEN_SPEED = 9257 ;
-    } else if(rcData.rc.s[1] == 3)
-    {
-        SHOOT_2006_ID1_GIVEN_SPEED = 6171 ;
+        SHOOT_2006_ID6_GIVEN_SPEED = 0 ;
     }
 
 }
 
 void shoot_stop_check()
 {
-    if(SHOOT_2006_ID1_GIVEN_SPEED > 0)
+    if(SHOOT_2006_ID6_GIVEN_SPEED > 0)
     {
 
         //如果卡住了//待更新，卡弹检测灵敏度不够，存才缓慢旋转
-        if(motor_can1_data[0].speed_rpm == 0)
+        if(motor_can1_data[5].speed_rpm == 0)
         {
             osDelay(SHOOT_SPEED_CHECK_TIME);
-            if(motor_can1_data[0].speed_rpm == 0)
+            if(motor_can1_data[5].speed_rpm == 0)
             {
-                SHOOT_2006_ID1_GIVEN_SPEED = SHOOT_TURN_OFF_SPEED ;
+                SHOOT_2006_ID6_GIVEN_SPEED = SHOOT_TURN_OFF_SPEED ;
                 osDelay(SHOOT_TURN_OFF_TIME);
                 shoot_speed_compute();//目标速度计算
             }
@@ -86,7 +90,7 @@ void shoot_stop_check()
 void shoot_pid_control()
 {
     //shoot
-    SHOOT_2006_ID1_GIVEN_CURRENT = shoot_2006_id1_speed_pid_loop(SHOOT_2006_ID1_GIVEN_SPEED);
+    SHOOT_2006_ID6_GIVEN_CURRENT = shoot_2006_id6_speed_pid_loop(SHOOT_2006_ID6_GIVEN_SPEED);
 }
 
 
@@ -103,9 +107,9 @@ void shoot_2006_id1_speed_pid_init(void)
 
 }
 
-int16_t shoot_2006_id1_speed_pid_loop(float shoot_2006_ID1_speed_set_loop)
+int16_t shoot_2006_id6_speed_pid_loop(float shoot_2006_ID6_speed_set_loop)
 {
-    PID_calc(&shoot_2006_ID1_speed_pid, motor_can1_data[0].speed_rpm , shoot_2006_ID1_speed_set_loop);
+    PID_calc(&shoot_2006_ID1_speed_pid, motor_can1_data[5].speed_rpm , shoot_2006_ID6_speed_set_loop);
     int16_t shoot_2006_id1_given_current_loop = (int16_t)(shoot_2006_ID1_speed_pid.out);
 
     return shoot_2006_id1_given_current_loop ;

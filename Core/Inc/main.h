@@ -47,8 +47,51 @@ extern float INS_angle[3] ;
 extern float INS_degree[3] ;
 
 //shoot
-extern float SHOOT_2006_ID1_GIVEN_SPEED ;
-extern int16_t SHOOT_2006_ID1_GIVEN_CURRENT ;
+extern float SHOOT_2006_ID6_GIVEN_SPEED ;
+extern int16_t SHOOT_2006_ID6_GIVEN_CURRENT ;
+
+extern float CHASSIS_3508_ID1_GIVEN_SPEED ;
+extern int16_t CHASSIS_3508_ID1_GIVEN_CURRENT ;
+
+extern float CHASSIS_3508_ID2_GIVEN_SPEED ;
+extern int16_t CHASSIS_3508_ID2_GIVEN_CURRENT ;
+
+extern float CHASSIS_3508_ID3_GIVEN_SPEED ;
+extern int16_t CHASSIS_3508_ID3_GIVEN_CURRENT ;
+
+extern float CHASSIS_3508_ID4_GIVEN_SPEED ;
+extern int16_t CHASSIS_3508_ID4_GIVEN_CURRENT ;
+
+extern float gimbal_vx ;
+extern float gimbal_vy ;
+
+extern float chassis_vx ;
+extern float chassis_vy ;
+extern float chassis_vround ;
+
+extern float yaw_angle_difference ;
+extern float yaw_radian_difference ;
+
+//friction wheel
+extern float FRICTION_WHEEL_3510_ID1_GIVEN_SPEED ;
+extern float FRICTION_WHEEL_3510_ID2_GIVEN_SPEED ;
+
+extern int16_t FRICTION_WHEEL_3510_ID1_GIVEN_CURRENT ;
+extern int16_t FRICTION_WHEEL_3510_ID2_GIVEN_CURRENT ;
+
+extern float YAW_6020_ID1_GIVEN_SPEED ;
+extern int16_t YAW_6020_ID1_GIVEN_CURRENT ;
+extern float YAW_6020_ID1_GIVEN_ANGLE ;
+
+extern float PITCH_6020_ID2_GIVEN_ANGLE ;
+extern float PITCH_6020_ID2_GIVEN_SPEED ;
+extern int16_t PITCH_6020_ID2_GIVEN_CURRENT ;
+
+extern float yaw_imu_preprocess ;//yaw轴imu预处理
+
+extern uint8_t uart7_receive_data ;//串口当前接收字节
+
+
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

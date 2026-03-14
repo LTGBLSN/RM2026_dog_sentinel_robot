@@ -7,17 +7,28 @@
 #include "main.h"
 #include "fdcan.h"
 
-struct dm_motor DM4340_01 ;
+struct dm_motor XIAOMI_01_right ;
+struct dm_motor XIAOMI_02_left;
 void dm_motor_init()
 {
-    memset(&DM4340_01, 0, sizeof(DM4340_01));//清零
+
 
     //第一个电机
-    DM4340_01.motor_type = DM4340 ;
-    DM4340_01.can_id = 0x01 ;
-    DM4340_01.can_master_id = 0x11 ;
-    DM4340_01.can_channel = CAN_CHANNEL_1 ;
-    DM4340_01.give_tor = 0.4f ;
+    memset(&XIAOMI_01_right, 0, sizeof(XIAOMI_01_right));//清零
+    XIAOMI_01_right.motor_type = XIAOMI ;
+    XIAOMI_01_right.can_id = 0x01 ;
+    XIAOMI_01_right.can_master_id = 0x11 ;
+    XIAOMI_01_right.can_channel = CAN_CHANNEL_3 ;
+    XIAOMI_01_right.give_tor = 0.0f ;
+
+
+    //第二个电机
+    memset(&XIAOMI_02_left, 0, sizeof(XIAOMI_02_left));//清零
+    XIAOMI_02_left.motor_type = XIAOMI ;
+    XIAOMI_02_left.can_id = 0x02 ;
+    XIAOMI_02_left.can_master_id = 0x12 ;
+    XIAOMI_02_left.can_channel = CAN_CHANNEL_3 ;
+    XIAOMI_02_left.give_tor = 0.0f ;
 
 
 

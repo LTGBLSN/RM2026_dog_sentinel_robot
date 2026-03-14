@@ -58,7 +58,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 
                 case 0x11:
                 {
-                    DM_motors_parse(&DM4340_01, rx_data);
+                    DM_motors_parse(&XIAOMI_01_right, rx_data);
                 }
                 default:
                     break;
@@ -102,6 +102,34 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
                     get_motor_measure(&motor_can3_data[i], rx_data);
                     break;
                 }
+
+
+
+
+
+                case 0x11:
+                {
+                    DM_motors_parse(&XIAOMI_01_right, rx_data);
+                    XIAOMI_01_right.last_online_time = HAL_GetTick() ;
+                    break;
+                }
+
+                case 0x12:
+                {
+                    DM_motors_parse(&XIAOMI_02_left, rx_data);
+                    XIAOMI_02_left.last_online_time = HAL_GetTick() ;
+                    break;
+                }
+
+
+
+
+
+
+
+
+
+
                 default:
                     break;
             }

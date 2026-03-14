@@ -6,6 +6,7 @@
 #include "pid.h"
 #include "DJI_motors.h"
 #include "GET_RC_TASK.h"
+#include "dm_motor.h"
 
 pid_type_def chassis_3508_ID1_speed_pid;
 pid_type_def chassis_3508_ID2_speed_pid;
@@ -20,6 +21,8 @@ void CHASSIS_TASK()
     chassis_3508_id2_speed_pid_init();
     chassis_3508_id3_speed_pid_init();
     chassis_3508_id4_speed_pid_init();
+
+    dm_motor_init();
 
     while (1)
     {
@@ -53,8 +56,8 @@ void gimbal_speed_get()
     }
     else
     {
-        gimbal_vx = ( (float)rcData.rc.ch[0]/660.0f) * CHASSIS_MAX_VX_SPEED;
-        gimbal_vy = ( (float)rcData.rc.ch[1]/660.0f) * CHASSIS_MAX_VY_SPEED;
+        gimbal_vx = ( (float)rcData.rc.ch[1]/660.0f) * CHASSIS_MAX_VX_SPEED;
+        gimbal_vy = ( (float)rcData.rc.ch[0]/660.0f) * CHASSIS_MAX_VY_SPEED;
     }
 
 
@@ -69,8 +72,8 @@ void gimbal_to_chassis_speed_compute()
     yaw_angle_difference = (float)(motor_can1_data[4].ecd - YAW_MID_ECD) / (float)(8192 / 360.0f) ;
     yaw_radian_difference = (float)yaw_angle_difference * (float)(M_PI / 180);
 
-    chassis_vx =GIMBAL_2CHASSIS_VX_KP * ( gimbal_vx * (float)cos((double)yaw_radian_difference) - gimbal_vy * (float)sin((double)yaw_radian_difference) );
-    chassis_vy =GIMBAL_2CHASSIS_VY_KP * ( gimbal_vx * (float)sin((double)yaw_radian_difference) + gimbal_vy * (float)cos((double)yaw_radian_difference));
+    chassis_vx = GIMBAL_2CHASSIS_VX_KP * ( gimbal_vx * (float)cos((double)yaw_radian_difference) - gimbal_vy * (float)sin((double)yaw_radian_difference) );
+    chassis_vy = GIMBAL_2CHASSIS_VY_KP * ( gimbal_vx * (float)sin((double)yaw_radian_difference) + gimbal_vy * (float)cos((double)yaw_radian_difference));
 
 
 
@@ -78,10 +81,10 @@ void gimbal_to_chassis_speed_compute()
 
 void chassis_settlement()
 {
-    CHASSIS_3508_ID1_GIVEN_SPEED = (int16_t)(-chassis_vy + chassis_vx + chassis_vround ) ;
-    CHASSIS_3508_ID2_GIVEN_SPEED = (int16_t)(chassis_vy + chassis_vx + chassis_vround) ;
-    CHASSIS_3508_ID3_GIVEN_SPEED = (int16_t)(chassis_vy - chassis_vx + chassis_vround) ;
-    CHASSIS_3508_ID4_GIVEN_SPEED = (int16_t)(-chassis_vy - chassis_vx + chassis_vround ) ;
+    CHASSIS_3508_ID1_GIVEN_SPEED = (int16_t)( chassis_vy - chassis_vx  + chassis_vround) ;
+    CHASSIS_3508_ID2_GIVEN_SPEED = (int16_t)( chassis_vy + chassis_vx  + chassis_vround) ;
+    CHASSIS_3508_ID3_GIVEN_SPEED = (int16_t)(-chassis_vy + chassis_vx  + chassis_vround) ;
+    CHASSIS_3508_ID4_GIVEN_SPEED = (int16_t)(-chassis_vy - chassis_vx  + chassis_vround) ;
 
 
 

@@ -9,17 +9,17 @@
 
 
 
-#define YAW_6020_ID1_ANGLE_PID_KP        0.3f//0.2f
+#define YAW_6020_ID1_ANGLE_PID_KP        0.2f//0.2f
 #define YAW_6020_ID1_ANGLE_PID_KI        0.0f
-#define YAW_6020_ID1_ANGLE_PID_KD        0.8f
-#define YAW_6020_ID1_ANGLE_PID_OUT_MAX   30.0f
+#define YAW_6020_ID1_ANGLE_PID_KD        4.0f
+#define YAW_6020_ID1_ANGLE_PID_OUT_MAX   20.0f
 #define YAW_6020_ID1_ANGLE_PID_KI_MAX    0.0f
 
-#define YAW_6020_ID1_SPEED_PID_KP        15000.0f//20000.0f
-#define YAW_6020_ID1_SPEED_PID_KI        40.0f
+#define YAW_6020_ID1_SPEED_PID_KP        10000.0f//20000.0f
+#define YAW_6020_ID1_SPEED_PID_KI        80.0f
 #define YAW_6020_ID1_SPEED_PID_KD        0.0f
 #define YAW_6020_ID1_SPEED_PID_OUT_MAX   25000.0f
-#define YAW_6020_ID1_SPEED_PID_KI_MAX    20000.0f
+#define YAW_6020_ID1_SPEED_PID_KI_MAX    10000.0f
 
 
 #define PITCH_6020_ID2_SPEED_PID_KP        10000.0f//15000.0f带上测速模块

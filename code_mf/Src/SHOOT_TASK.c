@@ -42,7 +42,7 @@ void SHOOOT_STOP_CHECK()
 
 void shoot_speed_compute()
 {
-    if(rcData.rc.ch[4] > 200)
+    if(rcData.rc.ch[4] > 600)
     {
         if(FRICTION_WHEEL_3510_ID1_GIVEN_SPEED != 0.0f)
         {

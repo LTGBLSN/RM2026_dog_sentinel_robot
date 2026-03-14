@@ -34,7 +34,7 @@
 
 
 
-#define YAW_MID_ECD 0
+#define YAW_MID_ECD 5103
 
 #define CHASSIS_MAX_VX_SPEED 3.0f //底盘最大移动速度，单位米每秒
 #define CHASSIS_MAX_VY_SPEED 3.0f //底盘最大移动速度，单位米每秒

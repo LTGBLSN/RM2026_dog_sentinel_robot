@@ -58,6 +58,7 @@ osThreadId stop_checkHandle;
 osThreadId chassisHandle;
 osThreadId gimbalHandle;
 osThreadId auto_aimHandle;
+osThreadId error_detHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -75,6 +76,7 @@ void SHOOOT_STOP_CHECK(void const * argument);
 void CHASSIS_TASK(void const * argument);
 void GIMBAL_TASK(void const * argument);
 void AUTO_AIM_TASK(void const * argument);
+void ERROR_DETECTION(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -164,6 +166,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of auto_aim */
   osThreadDef(auto_aim, AUTO_AIM_TASK, osPriorityIdle, 0, 512);
   auto_aimHandle = osThreadCreate(osThread(auto_aim), NULL);
+
+  /* definition and creation of error_det */
+  osThreadDef(error_det, ERROR_DETECTION, osPriorityIdle, 0, 512);
+  error_detHandle = osThreadCreate(osThread(error_det), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -367,6 +373,24 @@ __weak void AUTO_AIM_TASK(void const * argument)
     osDelay(1);
   }
   /* USER CODE END AUTO_AIM_TASK */
+}
+
+/* USER CODE BEGIN Header_ERROR_DETECTION */
+/**
+* @brief Function implementing the error_det thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_ERROR_DETECTION */
+__weak void ERROR_DETECTION(void const * argument)
+{
+  /* USER CODE BEGIN ERROR_DETECTION */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END ERROR_DETECTION */
 }
 
 /* Private application code --------------------------------------------------*/

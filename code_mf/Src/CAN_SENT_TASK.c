@@ -10,6 +10,8 @@
 #include "can_receive.h"
 #include "dm_motor.h"
 #include "GET_RC_TASK.h"
+#include "CAN_SENT_TASK.h"
+#include "ERROR_DETECTION.h"
 
 void CAN_SENT_TASK()
 {
@@ -58,6 +60,70 @@ void CAN_SENT_TASK()
         osDelay(1);
     }
 }
+
+
+
+
+void DM_CAN_SENT(uint8_t DM_can_sent_state)
+{
+    //第一个电机
+    if(XIAOMI_01_right.online_state == DM_MOTOR_SAFE)
+    {
+        switch (DM_can_sent_state)
+        {
+            case DM_GIVE_CURRENT:
+            {
+                Dm_Can_Send(XIAOMI_01_right.can_channel, XIAOMI_01_right.can_id, XIAOMI_01_right.motor_type, XIAOMI_01_right.give_tor);
+                break;
+            }
+            case DM_NO_CURRENT:
+            {
+                Dm_Can_Send(XIAOMI_01_right.can_channel, XIAOMI_01_right.can_id, XIAOMI_01_right.motor_type, 0.0f);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+    else//电机保活
+    {
+        dm_motor_mode_set(CMD_ENABLE_MODE, XIAOMI_01_right.can_channel,XIAOMI_01_right.can_id);
+    }
+
+
+    //第二个电机
+    if(XIAOMI_02_left.online_state == DM_MOTOR_SAFE)
+    {
+        switch (DM_can_sent_state)
+        {
+            case DM_GIVE_CURRENT:
+            {
+                Dm_Can_Send(XIAOMI_02_left.can_channel, XIAOMI_02_left.can_id, XIAOMI_02_left.motor_type, XIAOMI_02_left.give_tor);
+                break;
+            }
+            case DM_NO_CURRENT:
+            {
+                Dm_Can_Send(XIAOMI_02_left.can_channel, XIAOMI_02_left.can_id, XIAOMI_02_left.motor_type, 0.0f);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
+    else//电机保活
+    {
+        dm_motor_mode_set(CMD_ENABLE_MODE, XIAOMI_02_left.can_channel,XIAOMI_02_left.can_id);
+    }
+
+
+
+
+}
+
 
 
 

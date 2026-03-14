@@ -8,6 +8,7 @@
 #include "pid.h"
 #include "DJI_motors.h"
 #include "IMU_DATA_GET.h"
+#include "AUTO_AIM_TASK.h"
 
 
 pid_type_def yaw_6020_ID1_speed_pid;
@@ -63,10 +64,10 @@ void rc_pitch_input_normalization()
 
 
     // 如果开启自瞄且数据有效，覆盖目标值
-//    if(rcData.rc.s[1] == 1 && auto_aim_rx_packet.distance != -1.0f)
-//    {
-//        PITCH_GIVEN_ANGLE_COMPUTE = auto_aim_rx_packet.pitch;
-//    }
+    if(rcData.rc.s[1] == 1 && auto_aim_rx_packet.distance != -1.0f && auto_aim_rx_packet.distance != 0.0f)
+    {
+        PITCH_GIVEN_ANGLE_COMPUTE = auto_aim_rx_packet.pitch;
+    }
 
     // 统一限幅 (Clamp)
 
@@ -87,10 +88,10 @@ void rc_yaw_input_normalization()
 {
     float YAW_GIVEN_ANGLE_COMPUTE = YAW_6020_ID1_GIVEN_ANGLE + (YAW_RC_IN_KP * (float)rcData.rc.ch[2]) ;
 
-//    if(rcData.rc.s[1] == 1 && auto_aim_rx_packet.distance != -1.0f)
-//    {
-//        YAW_GIVEN_ANGLE_COMPUTE = auto_aim_rx_packet.yaw ;
-//    }
+    if(rcData.rc.s[1] == 1 && auto_aim_rx_packet.distance != -1.0f && auto_aim_rx_packet.distance != 0.0f)
+    {
+        YAW_GIVEN_ANGLE_COMPUTE = auto_aim_rx_packet.yaw ;
+    }
 
 
     if(YAW_GIVEN_ANGLE_COMPUTE > 180.0f)

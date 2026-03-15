@@ -17,8 +17,8 @@ void DEBUG_UART_TASK()
 {
     while (1)
     {
-        usart1_printf("%f,%f,%f \r\n",
-                      imu_data_from_board_BMI088_mahony.pitch_degree_angle,auto_aim_rx_packet.pitch,nav_rx_packet.vx);
+        usart1_printf("%d \r\n",
+                      motor_can1_data[4].ecd);
 
 //        usart1_printf("%f \r\n",
 //                      auto_aim_rx_packet.distance);

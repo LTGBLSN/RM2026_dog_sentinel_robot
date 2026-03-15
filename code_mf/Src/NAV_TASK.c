@@ -17,6 +17,13 @@ uint8_t nav_uart_rx_data;                   // 串口单字节接收变量
 
 
 
+LioOdom_t g_lio_odom;
+uint8_t uart_rx_buf[128]; // 缓冲区大一点，防止溢出
+
+
+
+
+
 /**
  * @brief 导航数据解析函数，由串口回调函数调用
  * @param rx_data 串口接收到的单个字节

@@ -10,6 +10,8 @@
 extern uint8_t nav_uart_rx_data;                   // 串口单字节接收变量
 extern struct NavReceivePacket nav_rx_packet;      // 最终解析出来的速度数据
 
+
+
 #pragma pack(1)
 struct NavReceivePacket {
     uint8_t header;   // 0x9A
@@ -27,6 +29,27 @@ struct NavReceivePacket {
 
 
 void nav_communication_data_parse(uint8_t rx_data);
+
+
+
+
+
+
+
+
+typedef struct __attribute__((packed)) {
+    uint8_t header;
+    float x;
+    float y;
+    float yaw;
+} LioOdom_t;
+
+
+extern LioOdom_t g_lio_odom;
+extern uint8_t uart_rx_buf[128]; // 缓冲区大一点，防止溢出
+
+
+
 
 
 

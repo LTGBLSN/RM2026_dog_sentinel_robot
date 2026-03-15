@@ -153,7 +153,7 @@ void friction_wheel_pid_control()
 
 void motor_gimbal_pid_compute()
 {
-    if(rcData.rc.s[0] != 1)
+    if(rcData.rc.s[0] == 1)
     {
         YAW_6020_ID1_GIVEN_CURRENT = (int16_t)yaw_speed_pid_loop(nav_rx_packet.wz);//ËÙ¶È»·
     }

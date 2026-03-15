@@ -91,6 +91,8 @@ extern float yaw_imu_preprocess ;//yaw轴imu预处理
 
 extern uint8_t uart7_receive_data ;//串口当前接收字节
 
+extern uint32_t odom_rx_time ;
+
 
 /* USER CODE END EC */
 

@@ -6,7 +6,7 @@
 #include "string.h"
 #include "usart.h"
 #include "remote_control.h"
-
+#include "NAV_TASK.h"
 
 
 #if REMOTE_TYPE == SBUS
@@ -131,6 +131,23 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
         HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_dbus_buff, DBUS_BUFF_SIZE);
         // 注意：H7开启了Cache时，可能需要在这里处理DCache的一致性 (SCB_InvalidateDCache_by_Addr)
     }
+
+    if (huart->Instance == USART10) {
+        // 1. 校验长度（Fast-LIO 发送的是 13 字节）
+        if (Size == sizeof(LioOdom_t)) {
+            // 2. 校验帧头
+            if (uart_rx_buf[0] == 0xA8) {
+                // 3. 结构体直接拷贝
+                memcpy(&g_lio_odom, uart_rx_buf, sizeof(LioOdom_t));
+                // 4. 更新接收时间戳
+                odom_rx_time = HAL_GetTick();
+
+            }
+        }
+
+        // 4. 【关键】处理完后，必须再次开启接收，否则只收一次
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart10, uart_rx_buf, sizeof(uart_rx_buf));
+    }
 }
 
 /**
@@ -141,6 +158,10 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
     if (huart->Instance == UART5)
     {
         HAL_UARTEx_ReceiveToIdle_DMA(huart, rx_dbus_buff, DBUS_BUFF_SIZE);
+    }
+    else if (huart->Instance == USART10)
+    {
+        HAL_UARTEx_ReceiveToIdle_DMA(&huart10, uart_rx_buf, sizeof(uart_rx_buf));
     }
 }
 

@@ -32,20 +32,45 @@
 
 
 
+#define CHASSIS_3508_NAV_VX_POSE_PID_KP   0.4f
+#define CHASSIS_3508_NAV_VX_POSE_PID_KI   0.0f
+#define CHASSIS_3508_NAV_VX_POSE_PID_KD   0.0f
+#define CHASSIS_3508_NAV_VX_POSE_PID_OUT_MAX   2.0f
+#define CHASSIS_3508_NAV_VX_POSE_PID_KI_MAX   0.0f
+
+#define CHASSIS_3508_NAV_VY_POSE_PID_KP   0.3f
+#define CHASSIS_3508_NAV_VY_POSE_PID_KI   0.0f
+#define CHASSIS_3508_NAV_VY_POSE_PID_KD   0.0f
+#define CHASSIS_3508_NAV_VY_POSE_PID_OUT_MAX   1.0f
+#define CHASSIS_3508_NAV_VY_POSE_PID_KI_MAX   0.0f
+
+#define CHASSIS_FOLLOW_GIMBAL_PID_KP   5.0f
+#define CHASSIS_FOLLOW_GIMBAL_PID_KI   0.0f
+#define CHASSIS_FOLLOW_GIMBAL_PID_KD   0.0f
+#define CHASSIS_FOLLOW_GIMBAL_PID_OUT_MAX   6000.0f
+#define CHASSIS_FOLLOW_GIMBAL_PID_KI_MAX   0.0f
 
 
-#define YAW_MID_ECD 5103
+
+#define YAW_MID_ECD 5103.0f
 
 #define CHASSIS_MAX_VX_SPEED 3.0f //底盘最大移动速度，单位米每秒
 #define CHASSIS_MAX_VY_SPEED 3.0f //底盘最大移动速度，单位米每秒
 
-#define GIMBAL_2CHASSIS_VX_KP 1500.0f //需要换算
-#define GIMBAL_2CHASSIS_VY_KP 1500.0f //需要换算
+#define GIMBAL_2CHASSIS_VX_KP 3000.0f //需要换算
+#define GIMBAL_2CHASSIS_VY_KP 3000.0f //需要换算
+
+
+
 
 extern pid_type_def chassis_3508_ID1_speed_pid;
 extern pid_type_def chassis_3508_ID2_speed_pid;
 extern pid_type_def chassis_3508_ID3_speed_pid;
 extern pid_type_def chassis_3508_ID4_speed_pid;
+
+extern pid_type_def chassis_3508_ID1_nav_vx_pose_pid;
+extern pid_type_def chassis_3508_ID1_nav_vy_pose_pid;
+extern pid_type_def chassis_follow_gimbal_pid;
 
 
 
@@ -67,6 +92,17 @@ void chassis_3508_id3_speed_pid_init(void);
 int16_t chassis_3508_id3_speed_pid_loop(float chassis_3508_ID3_speed_set_loop);
 void chassis_3508_id4_speed_pid_init(void);
 int16_t chassis_3508_id4_speed_pid_loop(float chassis_3508_ID4_speed_set_loop);
+
+void chassis_nav_vx_pose_pid_init(void);
+float chassis_3508_id1_nav_vx_pose_pid_loop(float chassis_3508_ID1_nav_vx_pose_set_loop);
+void chassis_nav_vy_pose_pid_init(void);
+float chassis_3508_id1_nav_vy_pose_pid_loop(float chassis_3508_ID1_nav_vy_pose_set_loop);
+
+void chassis_follow_gimbal_pid_init(void);
+float chassis_follow_gimbal_pid_loop(float chassis_follow_gimbal_set_loop);
+
+
+
 
 
 #endif //DM_H723_LIB_CHASSIS_TASK_H

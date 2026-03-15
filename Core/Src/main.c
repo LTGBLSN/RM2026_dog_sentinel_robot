@@ -105,7 +105,7 @@ float yaw_imu_preprocess ;//yaw轴imu预处理
 
 uint8_t uart7_receive_data ;//串口当前接收字节
 
-
+uint32_t odom_rx_time ;
 
 /* USER CODE END PV */
 
@@ -181,7 +181,9 @@ int main(void)
 
     HAL_UART_Receive_DMA(&huart7, &uart7_receive_data, 1);
 
-    HAL_UART_Receive_DMA(&huart10, &nav_uart_rx_data, 1);//继续进行中断接收
+//    HAL_UART_Receive_DMA(&huart10, &nav_uart_rx_data, 1);//继续进行中断接收
+    HAL_UARTEx_ReceiveToIdle_DMA(&huart10, uart_rx_buf, sizeof(uart_rx_buf));
+
 
     dm_motor_init();
 

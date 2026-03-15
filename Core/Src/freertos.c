@@ -59,6 +59,7 @@ osThreadId chassisHandle;
 osThreadId gimbalHandle;
 osThreadId auto_aimHandle;
 osThreadId error_detHandle;
+osThreadId nav_pose_setHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -77,6 +78,7 @@ void CHASSIS_TASK(void const * argument);
 void GIMBAL_TASK(void const * argument);
 void AUTO_AIM_TASK(void const * argument);
 void ERROR_DETECTION(void const * argument);
+void NAV_POSE_SET_TASK(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -170,6 +172,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of error_det */
   osThreadDef(error_det, ERROR_DETECTION, osPriorityIdle, 0, 512);
   error_detHandle = osThreadCreate(osThread(error_det), NULL);
+
+  /* definition and creation of nav_pose_set */
+  osThreadDef(nav_pose_set, NAV_POSE_SET_TASK, osPriorityIdle, 0, 512);
+  nav_pose_setHandle = osThreadCreate(osThread(nav_pose_set), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -391,6 +397,24 @@ __weak void ERROR_DETECTION(void const * argument)
     osDelay(1);
   }
   /* USER CODE END ERROR_DETECTION */
+}
+
+/* USER CODE BEGIN Header_NAV_POSE_SET_TASK */
+/**
+* @brief Function implementing the nav_pose_set thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_NAV_POSE_SET_TASK */
+__weak void NAV_POSE_SET_TASK(void const * argument)
+{
+  /* USER CODE BEGIN NAV_POSE_SET_TASK */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END NAV_POSE_SET_TASK */
 }
 
 /* Private application code --------------------------------------------------*/

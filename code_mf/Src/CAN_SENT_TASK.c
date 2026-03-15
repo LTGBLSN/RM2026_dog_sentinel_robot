@@ -26,6 +26,10 @@ void CAN_SENT_TASK()
 
         FDCAN_DJI_motors(0, 0, 0, 0, 0x200, CAN_CHANNEL_2);
         FDCAN_DJI_motors(0, 0, 0, 0, 0x1FF, CAN_CHANNEL_2);
+
+        DM_CAN_SENT(DM_NO_CURRENT);
+
+
     }
     else if (rcData.rc.s[0] == 3 | rcData.rc.s[0] == 1)
     {
@@ -51,6 +55,8 @@ void CAN_SENT_TASK()
                          PITCH_6020_ID2_GIVEN_CURRENT,
                          0,
                          0, 0x1FF, CAN_CHANNEL_2);
+
+        DM_CAN_SENT(DM_GIVE_CURRENT);
 
 
     }

@@ -8,6 +8,8 @@
 #define DM_GIVE_CURRENT 1
 #define DM_NO_CURRENT 0
 
+void DM_CAN_SENT(uint8_t DM_can_sent_state);
+
 
 
 

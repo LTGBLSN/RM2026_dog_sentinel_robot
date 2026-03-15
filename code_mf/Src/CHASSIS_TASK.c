@@ -7,6 +7,7 @@
 #include "DJI_motors.h"
 #include "GET_RC_TASK.h"
 #include "dm_motor.h"
+#include "NAV_TASK.h"
 
 pid_type_def chassis_3508_ID1_speed_pid;
 pid_type_def chassis_3508_ID2_speed_pid;
@@ -50,8 +51,8 @@ void gimbal_speed_get()
     if(rcData.rc.s[0] == 1)
     {
         //在这里写进入导航
-//        gimbal_vx =
-//        gimbal_vy =
+        gimbal_vx = nav_rx_packet.vx ;
+        gimbal_vy = nav_rx_packet.vy ;
 
     }
     else

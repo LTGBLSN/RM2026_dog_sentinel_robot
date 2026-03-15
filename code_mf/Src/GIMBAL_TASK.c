@@ -9,6 +9,7 @@
 #include "DJI_motors.h"
 #include "IMU_DATA_GET.h"
 #include "AUTO_AIM_TASK.h"
+#include "NAV_TASK.h"
 
 
 pid_type_def yaw_6020_ID1_speed_pid;
@@ -152,8 +153,17 @@ void friction_wheel_pid_control()
 
 void motor_gimbal_pid_compute()
 {
-    YAW_6020_ID1_GIVEN_SPEED = yaw_angle_pid_loop(YAW_6020_ID1_GIVEN_ANGLE) ;
-    YAW_6020_ID1_GIVEN_CURRENT = (int16_t)yaw_speed_pid_loop(YAW_6020_ID1_GIVEN_SPEED);//速度环
+    if(rcData.rc.s[0] != 1)
+    {
+        YAW_6020_ID1_GIVEN_CURRENT = (int16_t)yaw_speed_pid_loop(nav_rx_packet.wz);//速度环
+    }
+    else
+    {
+        YAW_6020_ID1_GIVEN_SPEED = yaw_angle_pid_loop(YAW_6020_ID1_GIVEN_ANGLE) ;
+        YAW_6020_ID1_GIVEN_CURRENT = (int16_t)yaw_speed_pid_loop(YAW_6020_ID1_GIVEN_SPEED);//速度环
+    }
+
+
 
     PITCH_6020_ID2_GIVEN_SPEED = pitch_angle_from_bmi088_pid_loop(PITCH_6020_ID2_GIVEN_ANGLE);//角度环
     PITCH_6020_ID2_GIVEN_CURRENT = (int16_t) (-pitch_speed_from_bmi088_pid_loop(PITCH_6020_ID2_GIVEN_SPEED)); //速度环

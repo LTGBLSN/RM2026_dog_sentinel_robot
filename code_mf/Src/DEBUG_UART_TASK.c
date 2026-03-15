@@ -11,13 +11,14 @@
 #include "dm_motor.h"
 #include "GET_RC_TASK.h"
 #include "AUTO_AIM_TASK.h"
+#include "NAV_TASK.h"
 
 void DEBUG_UART_TASK()
 {
     while (1)
     {
-        usart1_printf("%f,%f \r\n",
-                      imu_data_from_board_BMI088_mahony.pitch_degree_angle,auto_aim_rx_packet.pitch);
+        usart1_printf("%f,%f,%f \r\n",
+                      imu_data_from_board_BMI088_mahony.pitch_degree_angle,auto_aim_rx_packet.pitch,nav_rx_packet.vx);
 
 //        usart1_printf("%f \r\n",
 //                      auto_aim_rx_packet.distance);

@@ -8,7 +8,7 @@
 #include "fdcan.h"
 
 struct dm_motor XIAOMI_01_right ;
-struct dm_motor XIAOMI_02_left;
+struct dm_motor XIAOMI_02_left ;
 void dm_motor_init()
 {
 
@@ -17,7 +17,7 @@ void dm_motor_init()
     memset(&XIAOMI_01_right, 0, sizeof(XIAOMI_01_right));//«Â¡„
     XIAOMI_01_right.motor_type = XIAOMI ;
     XIAOMI_01_right.can_id = 0x01 ;
-    XIAOMI_01_right.can_master_id = 0x11 ;
+    XIAOMI_01_right.can_master_id = 0xB ;
     XIAOMI_01_right.can_channel = CAN_CHANNEL_3 ;
     XIAOMI_01_right.give_tor = 0.0f ;
 
@@ -26,7 +26,7 @@ void dm_motor_init()
     memset(&XIAOMI_02_left, 0, sizeof(XIAOMI_02_left));//«Â¡„
     XIAOMI_02_left.motor_type = XIAOMI ;
     XIAOMI_02_left.can_id = 0x02 ;
-    XIAOMI_02_left.can_master_id = 0x12 ;
+    XIAOMI_02_left.can_master_id = 0xC ;
     XIAOMI_02_left.can_channel = CAN_CHANNEL_3 ;
     XIAOMI_02_left.give_tor = 0.0f ;
 

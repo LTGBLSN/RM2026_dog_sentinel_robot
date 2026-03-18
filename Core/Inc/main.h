@@ -62,6 +62,12 @@ extern int16_t CHASSIS_3508_ID3_GIVEN_CURRENT ;
 extern float CHASSIS_3508_ID4_GIVEN_SPEED ;
 extern int16_t CHASSIS_3508_ID4_GIVEN_CURRENT ;
 
+extern float CHASSIS_3508_ID5_GIVEN_SPEED ;
+extern int16_t CHASSIS_3508_ID5_GIVEN_CURRENT ;
+
+extern float CHASSIS_3508_ID6_GIVEN_SPEED ;
+extern int16_t CHASSIS_3508_ID6_GIVEN_CURRENT ;
+
 extern float gimbal_vx ;
 extern float gimbal_vy ;
 

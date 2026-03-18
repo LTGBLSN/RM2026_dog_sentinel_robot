@@ -27,7 +27,20 @@ void CAN_SENT_TASK()
         FDCAN_DJI_motors(0, 0, 0, 0, 0x200, CAN_CHANNEL_2);
         FDCAN_DJI_motors(0, 0, 0, 0, 0x1FF, CAN_CHANNEL_2);
 
-        DM_CAN_SENT(DM_NO_CURRENT);
+        FDCAN_DJI_motors(0, 0, 0, 0, 0x200, CAN_CHANNEL_3);
+        FDCAN_DJI_motors(0, 0, 0, 0, 0x1FF, CAN_CHANNEL_3);
+
+
+        if(rcData.rc.s[1] == 1)
+        {
+            dm_motor_mode_set(CMD_ENABLE_MODE, XIAOMI_02_left.can_channel,XIAOMI_02_left.can_id);
+            dm_motor_mode_set(CMD_ENABLE_MODE, XIAOMI_01_right.can_channel,XIAOMI_01_right.can_id);
+        }
+        else
+        {
+            DM_CAN_SENT(DM_NO_CURRENT);
+        }
+
 
 
     }
@@ -46,17 +59,20 @@ void CAN_SENT_TASK()
 
 
 
-        FDCAN_DJI_motors(FRICTION_WHEEL_3510_ID1_GIVEN_CURRENT,
-                         FRICTION_WHEEL_3510_ID2_GIVEN_CURRENT,
-                         0,
-                         0, 0x200, CAN_CHANNEL_2);
-
         FDCAN_DJI_motors(0,
                          PITCH_6020_ID2_GIVEN_CURRENT,
                          0,
                          0, 0x1FF, CAN_CHANNEL_2);
 
+
+        FDCAN_DJI_motors(CHASSIS_3508_ID5_GIVEN_CURRENT,
+                         CHASSIS_3508_ID6_GIVEN_CURRENT,
+                         0,
+                         0,
+                         0x1FF, CAN_CHANNEL_3);
+
         DM_CAN_SENT(DM_GIVE_CURRENT);
+
 
 
     }

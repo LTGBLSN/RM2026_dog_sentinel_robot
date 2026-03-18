@@ -14,11 +14,16 @@ pid_type_def chassis_3508_ID1_speed_pid;
 pid_type_def chassis_3508_ID2_speed_pid;
 pid_type_def chassis_3508_ID3_speed_pid;
 pid_type_def chassis_3508_ID4_speed_pid;
+pid_type_def chassis_3508_ID5_speed_pid;
+pid_type_def chassis_3508_ID6_speed_pid;
 
 pid_type_def chassis_3508_ID1_nav_vx_pose_pid;
 pid_type_def chassis_3508_ID1_nav_vy_pose_pid;
 
 pid_type_def chassis_follow_gimbal_pid;
+
+pid_type_def xiaomi_01_speed_pid;
+pid_type_def xiaomi_02_speed_pid;
 
 
 
@@ -29,6 +34,8 @@ void CHASSIS_TASK()
     chassis_3508_id2_speed_pid_init();
     chassis_3508_id3_speed_pid_init();
     chassis_3508_id4_speed_pid_init();
+    chassis_3508_id5_speed_pid_init();
+    chassis_3508_id6_speed_pid_init();
 
     chassis_nav_vx_pose_pid_init();
     chassis_nav_vy_pose_pid_init();
@@ -36,6 +43,11 @@ void CHASSIS_TASK()
     chassis_follow_gimbal_pid_init();
 
     dm_motor_init();
+
+    xiaomi_01_pid_init();
+    xiaomi_02_pid_init();
+
+
 
     while (1)
     {
@@ -50,6 +62,14 @@ void CHASSIS_TASK()
         chassis_settlement();
         //pid计算
         motor_chassis_pid_compute();
+
+
+
+        xiaomi_given_angle_compute();
+
+        xiaomi_motor_pid_compute();
+
+
 
         osDelay(1);
     }
@@ -134,9 +154,38 @@ void chassis_settlement()
     CHASSIS_3508_ID2_GIVEN_SPEED = (int16_t)( chassis_vy + chassis_vx  + chassis_vround) ;
     CHASSIS_3508_ID3_GIVEN_SPEED = (int16_t)(-chassis_vy + chassis_vx  + chassis_vround) ;
     CHASSIS_3508_ID4_GIVEN_SPEED = (int16_t)(-chassis_vy - chassis_vx  + chassis_vround) ;
+    CHASSIS_3508_ID5_GIVEN_SPEED = (int16_t)(- chassis_vx  - chassis_vround) ;
+    CHASSIS_3508_ID6_GIVEN_SPEED = (int16_t)(+ chassis_vx  - chassis_vround) ;
 
 
 
+
+}
+
+void xiaomi_given_angle_compute()
+{
+    if(rcData.rc.ch[4] > 200)
+    {
+//        XIAOMI_02_left.give_angle = 0.8f ;
+//        XIAOMI_01_right.give_angle = -0.8f ;
+        XIAOMI_01_right.give_angle = -0.8f ;
+        XIAOMI_02_left.give_angle  = 0.8f ;
+
+
+    }
+    else
+    {
+        XIAOMI_01_right.give_angle = -0.2f ;
+        XIAOMI_02_left.give_angle  = 0.2f ;
+
+
+    }
+}
+
+void xiaomi_motor_pid_compute()
+{
+    XIAOMI_01_right.give_tor = xiaomi_01_pid_loop(XIAOMI_01_right.give_angle);
+    XIAOMI_02_left.give_tor = xiaomi_02_pid_loop(XIAOMI_02_left.give_angle);
 
 }
 
@@ -147,8 +196,49 @@ void motor_chassis_pid_compute()
     CHASSIS_3508_ID2_GIVEN_CURRENT = chassis_3508_id2_speed_pid_loop(CHASSIS_3508_ID2_GIVEN_SPEED);
     CHASSIS_3508_ID3_GIVEN_CURRENT = chassis_3508_id3_speed_pid_loop(CHASSIS_3508_ID3_GIVEN_SPEED);
     CHASSIS_3508_ID4_GIVEN_CURRENT = chassis_3508_id4_speed_pid_loop(CHASSIS_3508_ID4_GIVEN_SPEED);
+    CHASSIS_3508_ID5_GIVEN_CURRENT = chassis_3508_id5_speed_pid_loop(CHASSIS_3508_ID5_GIVEN_SPEED);
+    CHASSIS_3508_ID6_GIVEN_CURRENT = chassis_3508_id6_speed_pid_loop(CHASSIS_3508_ID6_GIVEN_SPEED);
+
 
 }
+
+
+void xiaomi_01_pid_init(void)
+{
+    static fp32 xiaomi_01_speed_kpkikd[3] = {XIAOMI_ID1_PID_KP, XIAOMI_ID1_PID_KI, XIAOMI_ID1_PID_KD};
+    PID_init(&xiaomi_01_speed_pid,PID_POSITION,xiaomi_01_speed_kpkikd,XIAOMI_PID_OUT_MAX,XIAOMI_PID_KI_MAX);
+
+}
+
+float xiaomi_01_pid_loop(float xiaomi_01_speed_set_loop)
+{
+    PID_calc(&xiaomi_01_speed_pid, XIAOMI_01_right.return_angle, xiaomi_01_speed_set_loop);
+    float xiaomi_01_given_current_loop = (float )(xiaomi_01_speed_pid.out);
+
+    return xiaomi_01_given_current_loop ;
+
+}
+
+
+void xiaomi_02_pid_init(void)
+{
+    static fp32 xiaomi_02_speed_kpkikd[3] = {XIAOMI_ID2_PID_KP, XIAOMI_ID2_PID_KI, XIAOMI_ID2_PID_KD};
+    PID_init(&xiaomi_02_speed_pid,PID_POSITION,xiaomi_02_speed_kpkikd,XIAOMI_PID_OUT_MAX,XIAOMI_PID_KI_MAX);
+
+}
+
+float xiaomi_02_pid_loop(float xiaomi_02_speed_set_loop)
+{
+    PID_calc(&xiaomi_02_speed_pid, XIAOMI_02_left.return_angle, xiaomi_02_speed_set_loop);
+    float xiaomi_02_given_current_loop = (float )(xiaomi_02_speed_pid.out);
+
+    return xiaomi_02_given_current_loop ;
+
+}
+
+
+
+
 
 
 
@@ -279,5 +369,41 @@ int16_t chassis_3508_id4_speed_pid_loop(float chassis_3508_ID4_speed_set_loop)
 
 }
 
+
+//5号电机
+void chassis_3508_id5_speed_pid_init(void)
+{
+    static fp32 chassis_3508_id5_speed_kpkikd[3] = {CHASSIS_3508_ID5_SPEED_PID_KP,CHASSIS_3508_ID5_SPEED_PID_KI,CHASSIS_3508_ID5_SPEED_PID_KD};
+    PID_init(&chassis_3508_ID5_speed_pid,PID_POSITION,chassis_3508_id5_speed_kpkikd,CHASSIS_3508_SPEED_PID_OUT_MAX,CHASSIS_3508_SPEED_PID_KI_MAX);
+
+}
+
+int16_t chassis_3508_id5_speed_pid_loop(float chassis_3508_ID5_speed_set_loop)
+{
+    PID_calc(&chassis_3508_ID5_speed_pid, motor_can3_data[4].speed_rpm , chassis_3508_ID5_speed_set_loop);
+    int16_t chassis_3508_ID5_given_current_loop = (int16_t)(chassis_3508_ID5_speed_pid.out);
+
+    return chassis_3508_ID5_given_current_loop ;
+
+}
+
+
+
+//6号电机
+void chassis_3508_id6_speed_pid_init(void)
+{
+    static fp32 chassis_3508_id6_speed_kpkikd[3] = {CHASSIS_3508_ID6_SPEED_PID_KP,CHASSIS_3508_ID6_SPEED_PID_KI,CHASSIS_3508_ID6_SPEED_PID_KD};
+    PID_init(&chassis_3508_ID6_speed_pid,PID_POSITION,chassis_3508_id6_speed_kpkikd,CHASSIS_3508_SPEED_PID_OUT_MAX,CHASSIS_3508_SPEED_PID_KI_MAX);
+
+}
+
+int16_t chassis_3508_id6_speed_pid_loop(float chassis_3508_ID6_speed_set_loop)
+{
+    PID_calc(&chassis_3508_ID6_speed_pid, motor_can3_data[5].speed_rpm , chassis_3508_ID6_speed_set_loop);
+    int16_t chassis_3508_ID6_given_current_loop = (int16_t)(chassis_3508_ID6_speed_pid.out);
+
+    return chassis_3508_ID6_given_current_loop ;
+
+}
 
 

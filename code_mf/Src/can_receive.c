@@ -107,14 +107,14 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 
 
 
-                case 0x11:
+                case 0xB:
                 {
                     DM_motors_parse(&XIAOMI_01_right, rx_data);
                     XIAOMI_01_right.last_online_time = HAL_GetTick() ;
                     break;
                 }
 
-                case 0x12:
+                case 0xC:
                 {
                     DM_motors_parse(&XIAOMI_02_left, rx_data);
                     XIAOMI_02_left.last_online_time = HAL_GetTick() ;

@@ -17,8 +17,9 @@ void DEBUG_UART_TASK()
 {
     while (1)
     {
-        usart1_printf("%d \r\n",
-                      motor_can1_data[4].ecd);
+        usart1_printf("%f,%f \r\n",
+                      XIAOMI_01_right.return_angle,
+                      XIAOMI_02_left.return_angle);
 
 //        usart1_printf("%f \r\n",
 //                      auto_aim_rx_packet.distance);

@@ -30,6 +30,24 @@
 #define CHASSIS_3508_ID4_SPEED_PID_KI   0.10f
 #define CHASSIS_3508_ID4_SPEED_PID_KD   0.0f
 
+#define CHASSIS_3508_ID5_SPEED_PID_KP   5.0f
+#define CHASSIS_3508_ID5_SPEED_PID_KI   0.10f
+#define CHASSIS_3508_ID5_SPEED_PID_KD   0.0f
+
+#define CHASSIS_3508_ID6_SPEED_PID_KP   5.0f
+#define CHASSIS_3508_ID6_SPEED_PID_KI   0.10f
+#define CHASSIS_3508_ID6_SPEED_PID_KD   0.0f
+
+#define XIAOMI_ID1_PID_KP   300.0f
+#define XIAOMI_ID1_PID_KI   0.2f
+#define XIAOMI_ID1_PID_KD   2500.0f
+
+#define XIAOMI_ID2_PID_KP   300.0f
+#define XIAOMI_ID2_PID_KI   0.2f
+#define XIAOMI_ID2_PID_KD   2500.0f
+
+#define XIAOMI_PID_OUT_MAX   18.0f
+#define XIAOMI_PID_KI_MAX   8.0f
 
 
 #define CHASSIS_3508_NAV_VX_POSE_PID_KP   0.4f
@@ -67,6 +85,9 @@ extern pid_type_def chassis_3508_ID1_speed_pid;
 extern pid_type_def chassis_3508_ID2_speed_pid;
 extern pid_type_def chassis_3508_ID3_speed_pid;
 extern pid_type_def chassis_3508_ID4_speed_pid;
+extern pid_type_def chassis_3508_ID5_speed_pid;
+extern pid_type_def chassis_3508_ID6_speed_pid;
+
 
 extern pid_type_def chassis_3508_ID1_nav_vx_pose_pid;
 extern pid_type_def chassis_3508_ID1_nav_vy_pose_pid;
@@ -76,12 +97,21 @@ extern pid_type_def chassis_follow_gimbal_pid;
 
 void gimbal_speed_get();
 
+void xiaomi_given_angle_compute();
+
+void xiaomi_motor_pid_compute();
 
 void gimbal_to_chassis_speed_compute();
 
 void chassis_settlement();
 
 void motor_chassis_pid_compute();
+
+void xiaomi_01_pid_init(void);
+void xiaomi_02_pid_init(void);
+
+float xiaomi_01_pid_loop(float xiaomi_01_speed_set_loop);
+float xiaomi_02_pid_loop(float xiaomi_02_speed_set_loop);
 
 
 void chassis_3508_id1_speed_pid_init(void);
@@ -92,6 +122,12 @@ void chassis_3508_id3_speed_pid_init(void);
 int16_t chassis_3508_id3_speed_pid_loop(float chassis_3508_ID3_speed_set_loop);
 void chassis_3508_id4_speed_pid_init(void);
 int16_t chassis_3508_id4_speed_pid_loop(float chassis_3508_ID4_speed_set_loop);
+void chassis_3508_id5_speed_pid_init(void);
+int16_t chassis_3508_id5_speed_pid_loop(float chassis_3508_ID5_speed_set_loop);
+void chassis_3508_id6_speed_pid_init(void);
+int16_t chassis_3508_id6_speed_pid_loop(float chassis_3508_ID6_speed_set_loop);
+
+
 
 void chassis_nav_vx_pose_pid_init(void);
 float chassis_3508_id1_nav_vx_pose_pid_loop(float chassis_3508_ID1_nav_vx_pose_set_loop);

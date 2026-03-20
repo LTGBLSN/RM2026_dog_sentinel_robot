@@ -60,6 +60,7 @@ osThreadId gimbalHandle;
 osThreadId auto_aimHandle;
 osThreadId error_detHandle;
 osThreadId nav_pose_setHandle;
+osThreadId vround_stateHandle;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -79,6 +80,7 @@ void GIMBAL_TASK(void const * argument);
 void AUTO_AIM_TASK(void const * argument);
 void ERROR_DETECTION(void const * argument);
 void NAV_POSE_SET_TASK(void const * argument);
+void VROUND_CHECK_TASK(void const * argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -176,6 +178,10 @@ void MX_FREERTOS_Init(void) {
   /* definition and creation of nav_pose_set */
   osThreadDef(nav_pose_set, NAV_POSE_SET_TASK, osPriorityIdle, 0, 512);
   nav_pose_setHandle = osThreadCreate(osThread(nav_pose_set), NULL);
+
+  /* definition and creation of vround_state */
+  osThreadDef(vround_state, VROUND_CHECK_TASK, osPriorityIdle, 0, 256);
+  vround_stateHandle = osThreadCreate(osThread(vround_state), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -415,6 +421,24 @@ __weak void NAV_POSE_SET_TASK(void const * argument)
     osDelay(1);
   }
   /* USER CODE END NAV_POSE_SET_TASK */
+}
+
+/* USER CODE BEGIN Header_VROUND_CHECK_TASK */
+/**
+* @brief Function implementing the vround_state thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_VROUND_CHECK_TASK */
+__weak void VROUND_CHECK_TASK(void const * argument)
+{
+  /* USER CODE BEGIN VROUND_CHECK_TASK */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END VROUND_CHECK_TASK */
 }
 
 /* Private application code --------------------------------------------------*/

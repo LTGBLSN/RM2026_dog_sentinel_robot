@@ -62,7 +62,11 @@ float INS_angle[3] = {0.0f, 0.0f, 0.0f};
 float INS_degree[3] = {0.0f, 0.0f, 0.0f};
 
 //shoot
-float SHOOT_2006_ID6_GIVEN_SPEED ;
+
+int16_t SHOOT_TURN_ON_SPEED = SHOOT_MIN_SPEED;
+
+
+float SHOOT_2006_ID6_GIVEN_SPEED = SHOOT_MIN_SPEED;
 int16_t SHOOT_2006_ID6_GIVEN_CURRENT ;
 
 float CHASSIS_3508_ID1_GIVEN_SPEED ;
@@ -114,6 +118,10 @@ float yaw_imu_preprocess ;//yaw轴imu预处理
 uint8_t uart7_receive_data ;//串口当前接收字节
 
 uint32_t odom_rx_time ;
+
+int16_t vround_always_speed = 0;
+
+
 
 /* USER CODE END PV */
 

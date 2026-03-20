@@ -17,9 +17,9 @@ void DEBUG_UART_TASK()
 {
     while (1)
     {
-        usart1_printf("%f,%f \r\n",
-                      XIAOMI_01_right.return_angle,
-                      XIAOMI_02_left.return_angle);
+        usart1_printf("%d,%f \r\n",
+                      (rcData.key.v & KEY_PRESSED_OFFSET_Q),
+                      gimbal_vx);
 
 //        usart1_printf("%f \r\n",
 //                      auto_aim_rx_packet.distance);

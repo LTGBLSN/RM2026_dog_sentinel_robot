@@ -47,6 +47,9 @@ extern float INS_angle[3] ;
 extern float INS_degree[3] ;
 
 //shoot
+extern int16_t SHOOT_TURN_ON_SPEED ;
+
+
 extern float SHOOT_2006_ID6_GIVEN_SPEED ;
 extern int16_t SHOOT_2006_ID6_GIVEN_CURRENT ;
 
@@ -98,6 +101,11 @@ extern float yaw_imu_preprocess ;//yaw轴imu预处理
 extern uint8_t uart7_receive_data ;//串口当前接收字节
 
 extern uint32_t odom_rx_time ;
+
+
+extern int16_t vround_always_speed ;
+
+
 
 
 /* USER CODE END EC */

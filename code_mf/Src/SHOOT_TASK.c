@@ -42,6 +42,7 @@ void SHOOOT_STOP_CHECK()
 
 void shoot_speed_compute()
 {
+
     if(rcData.rc.ch[4] > 600 || rcData.mouse.press_l == 1)
     {
         if(FRICTION_WHEEL_3510_ID1_GIVEN_SPEED != 0.0f)
@@ -52,8 +53,6 @@ void shoot_speed_compute()
         {
             SHOOT_2006_ID6_GIVEN_SPEED = 0 ;
         }
-
-
     }
     else
     {

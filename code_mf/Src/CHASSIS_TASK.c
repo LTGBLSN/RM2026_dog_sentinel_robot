@@ -77,38 +77,28 @@ void CHASSIS_TASK()
 
 void gimbal_speed_get()
 {
-    if(rcData.rc.ch[1] != 0 | rcData.rc.ch[0] != 0)
+    if(rcData.rc.s[0] == 1)
     {
-        gimbal_vx = ( (float)rcData.rc.ch[1]/660.0f) * CHASSIS_MAX_VX_SPEED;
-        gimbal_vy = ( (float)rcData.rc.ch[0]/660.0f) * CHASSIS_MAX_VY_SPEED;
+        //在这里写进入导航
+        if(pose_key < 9)
+        {
+            gimbal_vx = chassis_3508_id1_nav_vx_pose_pid_loop(pose_set_xy[0][pose_key]) ;
+            gimbal_vy = -chassis_3508_id1_nav_vy_pose_pid_loop(pose_set_xy[1][pose_key]) ;
+        }
+        else
+        {
+            gimbal_vx = 0.0f ;
+            gimbal_vy = 0.0f ;
+        }
+
+
+
+
     }
     else
     {
-        if((rcData.key.v & KEY_PRESSED_OFFSET_W))
-        {
-            gimbal_vx = CHASSIS_MAX_VX_SPEED;
-        }
-        else if((rcData.key.v & KEY_PRESSED_OFFSET_S))
-        {
-            gimbal_vx = -CHASSIS_MAX_VX_SPEED;
-        }
-        else
-        {
-            gimbal_vx = 0;
-        }
-
-        if((rcData.key.v & KEY_PRESSED_OFFSET_D))
-        {
-            gimbal_vy = CHASSIS_MAX_VY_SPEED;
-        }
-        else if((rcData.key.v & KEY_PRESSED_OFFSET_A))
-        {
-            gimbal_vy = -CHASSIS_MAX_VY_SPEED;
-        }
-        else
-        {
-            gimbal_vy = 0;
-        }
+        gimbal_vx = ( (float)rcData.rc.ch[1]/660.0f) * CHASSIS_MAX_VX_SPEED;
+        gimbal_vy = ( (float)rcData.rc.ch[0]/660.0f) * CHASSIS_MAX_VY_SPEED;
     }
 
 
@@ -121,20 +111,6 @@ void gimbal_speed_get()
 
 }
 
-
-
-
-//void gimbal_to_chassis_speed_compute()
-//{
-//    yaw_angle_difference = (float)(motor_can1_data[4].ecd - YAW_MID_ECD) / (float)(8192 / 360.0f) ;
-//    yaw_radian_difference = (float)yaw_angle_difference * (float)(M_PI / 180);
-//
-//    chassis_vx = GIMBAL_2CHASSIS_VX_KP * ( gimbal_vx * (float)cos((double)yaw_radian_difference) - gimbal_vy * (float)sin((double)yaw_radian_difference) );
-//    chassis_vy = GIMBAL_2CHASSIS_VY_KP * ( gimbal_vx * (float)sin((double)yaw_radian_difference) + gimbal_vy * (float)cos((double)yaw_radian_difference));
-//
-//
-//
-//}
 
 
 void gimbal_to_chassis_speed_compute()
@@ -155,18 +131,8 @@ void gimbal_to_chassis_speed_compute()
     // 标准解耦公式
     chassis_vx = GIMBAL_2CHASSIS_VX_KP * ( gimbal_vx * cos_theta + gimbal_vy * sin_theta) ;
     chassis_vy = GIMBAL_2CHASSIS_VY_KP * (-gimbal_vx * sin_theta + gimbal_vy * cos_theta);
-    if(vround_always_speed == 0)
-    {
-        chassis_vround = chassis_follow_gimbal_pid_loop(YAW_MID_ECD);
-    }
-    else
-    {
-        chassis_vround = 4000;
-    }
+    chassis_vround = chassis_follow_gimbal_pid_loop(YAW_MID_ECD);
 
-
-    // 3. 加上小陀螺转速 (Wz)
-    // chassis_vw = spinning_speed;
 }
 
 void chassis_settlement()
